@@ -6,6 +6,7 @@ use ash::{
     version::{DeviceV1_0, EntryV1_0, InstanceV1_0},
     vk, Device, Entry, Instance,
 };
+use simple_logger::SimpleLogger;
 use std::{
     error::Error,
     ffi::{CStr, CString},
@@ -25,9 +26,14 @@ const APP_NAME: &str = "Triangle";
 #[cfg_attr(target_os = "android", ndk_glue::main(backtrace = "on"))]
 pub fn main() {
     #[cfg(not(target_os = "android"))]
-    simple_logger::init_by_env();
+    SimpleLogger::from_env()
+        .init()
+        .expect("Failed to init logger");
     #[cfg(target_os = "android")]
-    simple_logger::init_with_level(log::Level::Debug).expect("Failed to init logger");
+    SimpleLogger::new()
+        .with_level(log::LevelFilter::Debug)
+        .init()
+        .expect("Failed to init logger");
 
     log::debug!("Starting application");
 
