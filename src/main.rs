@@ -101,7 +101,7 @@ impl TriangleApp {
         log::info!("Create application");
 
         // Vulkan instance
-        let entry = Entry::new()?;
+        let entry = unsafe { Entry::new()? };
         let (instance, debug_report, debug_report_callback) =
             create_vulkan_instance(&entry, window)?;
 
