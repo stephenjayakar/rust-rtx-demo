@@ -20,13 +20,13 @@ use winit::{
 
 const WIDTH: u32 = 800;
 const HEIGHT: u32 = 600;
-const APP_NAME: &str = "Triangle";
+const APP_NAME: &str = "vulkan-triangle";
 
 fn main() -> Result<(), Box<dyn Error>> {
     simple_logger::init_by_env();
 
     let (window, event_loop) = create_window();
-    let mut app = Triangle::new(&window)?;
+    let mut app = TriangleApp::new(&window)?;
     let mut is_swapchain_dirty = false;
 
     event_loop.run(move |event, _, control_flow| {
@@ -68,7 +68,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     });
 }
 
-struct Triangle {
+struct TriangleApp {
     _entry: Entry,
     instance: Instance,
     debug_report: DebugReport,
@@ -96,7 +96,7 @@ struct Triangle {
     fence: vk::Fence,
 }
 
-impl Triangle {
+impl TriangleApp {
     fn new(window: &Window) -> Result<Self, Box<dyn Error>> {
         log::info!("Create application");
 
@@ -373,7 +373,7 @@ impl Triangle {
     }
 }
 
-impl Drop for Triangle {
+impl Drop for TriangleApp {
     fn drop(&mut self) {
         unsafe {
             self.device.destroy_fence(self.fence, None);
